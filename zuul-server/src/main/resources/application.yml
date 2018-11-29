@@ -1,0 +1,25 @@
+server:
+  port: 8030
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: zuul
+
+
+
+#在服务中心注册zuul服务
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+
+#zuul路由配置
+zuul:
+  routes:
+    api-a:
+      path: /api-a/**   #指定请求的路径
+      serviceId: ribbon  #指定请求的服务
+    api-b:
+      path: /api-b/**
+      serviceId: feign
