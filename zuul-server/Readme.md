@@ -11,7 +11,7 @@ spirngcloud微服务系统中，负载均衡模式如下
 * 路由功能是微服务的一部分，比如／api/user转发到到user服务，/api/shop转发到到shop服务。
 * zuul默认和Ribbon结合实现了负载均衡的功能
 
-# Zuul服务创建
+# Zuul网关
 1.配置pom.xml
 
     <dependency>
@@ -54,4 +54,40 @@ spirngcloud微服务系统中，负载均衡模式如下
         api-b:
           path: /api-b/**
           serviceId: feign
-4.启动服务，访问 http://localhost:8030/api-b/hi?name=123
+4.启动服务，访问如下路径，验证结果 ：
+    
+    http://localhost:8030/api-b/hi?name=123
+    http://localhost:8030/api-a/hi?name=123
+    
+# 服务过滤
+1.定义filter类继承zuulfilter
+
+    @Component
+    public class MyServiceFilter extends ZuulFilter {
+        @Override
+        public String filterType() {
+            //返回过滤器的类型，pre\routing\post\error,分别表示路由之前、路由时、路由后、发送错误调用
+            return "pre";
+        }
+        @Override
+        public int filterOrder() {
+            //当前过滤器的顺序
+            return 0;
+        }
+        @Override
+        public boolean shouldFilter() {
+            //TODO 判定是否需要过滤，true=是，false=否
+            return true;
+        }
+        @Override
+        public Object run() throws ZuulException {
+            //TODO 过滤器具体逻辑
+            return null;
+        }
+    }
+2.加入shouldFilter和run的逻辑
+
+3.访问如下url,验证结果：
+
+    http://localhost:8030/api-a/hi?name=forezp
+    http://localhost:8030/api-a/hi?name=forezp&token=456
