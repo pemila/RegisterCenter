@@ -1,0 +1,20 @@
+server:
+  port: 8040
+
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/pemila/SpringCloud/ #git仓库地址
+          search-paths: configfiles #仓库配置路径
+          username:                 #访问用户名
+          password:                 #访问密码
+      label: master                 # 配置仓库分支
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
